@@ -1,4 +1,3 @@
-import './css/styles.css';
 import Notiflix from 'notiflix';
 import { fetchBreeds, fetchCatByBreed } from './js/cat-api';
 import SlimSelect from 'slim-select';
@@ -11,13 +10,11 @@ const loaderEl = document.querySelector(`.loader`);
 
 breedSelect.addEventListener(`change`, onChangeSelect);
 
-fetchAndRenderBreeds();
-
 function onChangeSelect(e) {
   loaderEl.classList.remove('is-hidden');
-  divDescEl = '';
-  divImageEl = '';
-  breedId = e.tagret.value;
+  divDescEl.innerHTML = '';
+  divImageEl.innerHTML = '';
+  let breedId = e.target.value;
   fetchCatByBreed(breedId).then(breed =>
     renderBreedDesc(breed)
       .catch(error =>
@@ -30,12 +27,12 @@ function onChangeSelect(e) {
 }
 
 const fetchAndRenderBreeds = () => {
-  loaderEl.classList.remove(`is-hidden`);
+  loaderEl.classList.remove('is-hidden');
   fetchBreeds()
     .then(breeds => renderBreedsSelect(breeds))
     .catch(error =>
       Notiflix.Notify.failure(
-        `'Oops! Something went wrong! Try reloading the page!`
+        'Oops! Something went wrong! Try reloading the page!'
       )
     )
     .finally(() => {
@@ -44,13 +41,16 @@ const fetchAndRenderBreeds = () => {
     });
 };
 
+fetchAndRenderBreeds();
+
 const renderBreedsSelect = breeds => {
   const markup = breeds
     .map(breed => {
-      return `<option> value ="${breed.reference_image_id}">${breed.name}</option>`;
+      return `<option value ="${breed.reference_image_id}">${breed.name}</option>`;
     })
     .join('');
   breedSelect.insertAdjacentHTML(`beforeend`, markup);
+
   new SlimSelect({
     select: '#single',
   });
@@ -60,7 +60,7 @@ const renderBreedDesc = breed => {
   const markupImg = `<img class="cat-picture" src = "${breed.url}" alt = ${breed.id}>`;
   const markupDesc = `<h2 class = "cat-info-desc-title">${breed.breeds[0].name}</h2>
   <p class = "cat-info-desc-desc">${breed.breeds[0].description}</p>
-  <p class = "cat-info-desc-temperament">${breed.breeds[0].temperament}</p>`;
+  <p class = "cat-info-desc-temperament"><b>Temperament:</b> ${breed.breeds[0].temperament}</p>`;
   divImageEl.insertAdjacentHTML(`beforeend`, markupImg);
   divDescEl.insertAdjacentHTML(`beforeend`, markupDesc);
 };

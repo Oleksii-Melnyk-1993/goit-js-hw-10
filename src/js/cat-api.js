@@ -1,9 +1,9 @@
-const BASIC_URL = `https://api.thecatapi.com/v1/breeds/`;
+const BASIC_URL = 'https://api.thecatapi.com/v1/breeds/';
 const IMAGE_URL = 'https://api.thecatapi.com/v1/images';
-const api_key = `live_lvD3uI5CdihOHbstnJUM5V1e97yo8eoKfhXalfYIIHTtwX7IxIZERCdbUTsJcHcB`;
+const uniqueKey = `live_lvD3uI5CdihOHbstnJUM5V1e97yo8eoKfhXalfYIIHTtwX7IxIZERCdbUTsJcHcB`;
 
 const fetchBreeds = () => {
-  return fetch(`${BASIC_URL}?${api_key}`).then(response => {
+  return fetch(`${BASIC_URL}?api_key=${uniqueKey}`).then(response => {
     if (!response.ok) {
       throw new Error(response.status);
     }
@@ -12,12 +12,14 @@ const fetchBreeds = () => {
 };
 
 const fetchCatByBreed = breedId => {
-  return fetch(`${IMAGE_URL}?${api_key}`).then(response => {
-    if (!response.ok) {
-      throw new Error(response.status);
+  return fetch(`${IMAGE_URL}/${breedId}?api_key=${uniqueKey}`).then(
+    response => {
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+      return response.json();
     }
-    return response.json();
-  });
+  );
 };
 
 export { fetchBreeds, fetchCatByBreed };
