@@ -10,22 +10,6 @@ const loaderEl = document.querySelector(`.loader`);
 
 breedSelect.addEventListener(`change`, onChangeSelect);
 
-function onChangeSelect(e) {
-  loaderEl.classList.remove('is-hidden');
-  divDescEl.innerHTML = '';
-  divImageEl.innerHTML = '';
-  let breedId = e.target.value;
-  fetchCatByBreed(breedId).then(breed =>
-    renderBreedDesc(breed)
-      .catch(error =>
-        Notiflix.Notify.failure(
-          'Oops! Something went wrong! Try reloading the page!'
-        )
-      )
-      .finally(() => loaderEl.classList.add('is-hidden'))
-  );
-}
-
 const fetchAndRenderBreeds = () => {
   loaderEl.classList.remove('is-hidden');
   fetchBreeds()
@@ -42,6 +26,22 @@ const fetchAndRenderBreeds = () => {
 };
 
 fetchAndRenderBreeds();
+
+function onChangeSelect(e) {
+  loaderEl.classList.remove('is-hidden');
+  divDescEl.innerHTML = '';
+  divImageEl.innerHTML = '';
+  let breedId = e.target.value;
+  fetchCatByBreed(breedId).then(breed =>
+    renderBreedDesc(breed)
+      .catch(error =>
+        Notiflix.Notify.failure(
+          'Oops! Something went wrong! Try reloading the page!'
+        )
+      )
+      .finally(() => loaderEl.classList.add('is-hidden'))
+  );
+}
 
 const renderBreedsSelect = breeds => {
   const markup = breeds
