@@ -32,15 +32,14 @@ function onChangeSelect(e) {
   divDescEl.innerHTML = '';
   divImageEl.innerHTML = '';
   let breedId = e.target.value;
-  fetchCatByBreed(breedId).then(breed =>
-    renderBreedDesc(breed)
-      .catch(error =>
-        Notiflix.Notify.failure(
-          'Oops! Something went wrong! Try reloading the page!'
-        )
-      )
-      .finally(() => loaderEl.classList.add('is-hidden'))
-  );
+  fetchCatByBreed(breedId)
+    .then(breed => renderBreedDesc(breed))
+    .catch(error => {
+      Notiflix.Notify.failure(
+        'Oops! Something went wrong! Try reloading the page!'
+      );
+    })
+    .finally(() => loaderEl.classList.add('is-hidden'));
 }
 
 const renderBreedsSelect = breeds => {
